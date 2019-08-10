@@ -12,6 +12,10 @@
 */
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('profile', 'UserController@profile');
+
+Route::get('test', function () {
+    return view('layouts.app');
+});
 
 Auth::routes();
-

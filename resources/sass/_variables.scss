@@ -1,9 +1,10 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #303030;
+$body-color: #707070;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
+$font-family-sans-serif: 'Montserrat', sans-serif;
+$font-size-base: 1rem;
 $line-height-base: 1.6;
 
 // Colors
@@ -12,8 +13,12 @@ $indigo: #6574cd;
 $purple: #9561e2;
 $pink: #f66d9b;
 $red: #e3342f;
-$orange: #f6993f;
+$orange: #FF983D;
 $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+
+// Pink gradient
+$darkPink: #FF3D86;
+$lightPink: #E16190;

@@ -23,6 +23,10 @@ Vue.use(VueLazyLoad);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.component('navbar', require('./components/Navbar.vue').default);
+Vue.component('register', require('./components/Register.vue').default);
+Vue.component('login', require('./components/Login.vue').default);
+Vue.component('profile', require('./components/Profile.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
 
 /**
