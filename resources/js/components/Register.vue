@@ -5,20 +5,32 @@
                 <h1 class="text-custom">Woof!</h1>
                 <h1 class="mb-5">Are you gonna be my best friend?</h1>
 
-                <form class="text-left">
+                <form class="text-left" @submit.prevent="register" id="form">
                     <div class="form-group">
                         <label for="username">Choose a username</label>
-                        <input type="text" name="username" class="form-control" id="username">
+                        <input type="text" name="username" :class="['form-control', invalidClass('username')]" id="username">
+                        <div class="invalid-feedback" v-if="hasError('username')">
+                            {{ requestErrors.username[0] }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="email">Enter an email address</label>
-                        <input type="email" name="email" class="form-control" id="email">
+                        <input type="email" name="email" :class="['form-control', invalidClass('email')]" id="email">
+                        <div class="invalid-feedback" v-if="hasError('email')">
+                            {{ requestErrors.email[0] }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Choose a password</label>
-                        <input type="password" name="password" class="form-control" id="password">
+                        <input type="password" name="password" :class="['form-control', invalidClass('password')]" id="password">
+                        <div class="invalid-feedback" v-if="hasError('password')">
+                            {{ requestErrors.password[0] }}
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-pink btn-lg btn-block mt-5">Sign Up</button>
+                    <button type="submit" class="btn btn-pink btn-lg btn-block mt-5" :disabled="isLoading">
+                        <template v-if="!isLoading">Sign Up</template>
+                        <img src="/img/loading.svg" style="width: 30px" v-else>
+                    </button>
                 </form>
             </div>
         </div>
@@ -29,6 +41,42 @@
 
 <script>
   export default {
-    name: "Register"
+    name: "Register",
+    data: function () {
+      return {
+        requestErrors: {},
+        isLoading: false
+      };
+    },
+    methods: {
+      register: function () {
+        this.resetErrors();
+
+        let formData = new FormData(document.getElementById('form'));
+
+        this.isLoading = true;
+
+        axios.post('/register', formData).then(response => {
+          location.href = '/';
+        }).catch(error => {
+          if (error.response.status === 422) {
+            this.requestErrors = error.response.data.errors;
+          }
+
+          this.isLoading = false;
+        });
+      },
+      hasError: function (fieldName) {
+        let data = this.requestErrors[fieldName];
+
+        return (data !== undefined && data.length > 0);
+      },
+      invalidClass: function (field) {
+        return this.hasError(field) ? 'is-invalid' : '';
+      },
+      resetErrors: function () {
+        this.requestErrors = {};
+      }
+    }
   }
 </script>
