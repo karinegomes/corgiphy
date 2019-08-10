@@ -12,10 +12,10 @@
 */
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('profile', 'UserController@profile');
+Route::get('search', 'SearchController@doSearch');
 
-Route::get('test', function () {
-    return view('layouts.app');
+Route::middleware('auth')->group(function () {
+    Route::get('profile', 'UserController@profile');
 });
 
 Auth::routes();

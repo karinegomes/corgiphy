@@ -26,9 +26,11 @@ Vue.use(VueRouter);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('navbar', require('./components/Navbar.vue').default);
+Vue.component('lightbox', require('./components/partials/Lightbox.vue').default);
 Vue.component('register', require('./components/Register.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
 Vue.component('profile', require('./components/Profile.vue').default);
+Vue.component('search', require('./components/Search.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
 
 /**

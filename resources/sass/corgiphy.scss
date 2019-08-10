@@ -34,6 +34,14 @@ a:not(.btn), a:hover:not(.btn), a:active:not(.btn) {
     background-color: $body-bg;
     padding: 2rem;
     border: 1px solid $body-color;
+
+    &:focus {
+        color: $body-color;
+        background-color: $body-bg;
+        border-color: $orange;
+        outline: 0;
+        box-shadow: none;
+    }
 }
 
 .input-group-text {
@@ -119,6 +127,22 @@ a:not(.btn), a:hover:not(.btn), a:active:not(.btn) {
     cursor: pointer;
 }
 
+.gallery-img {
+    height: 20rem;
+    background-repeat:no-repeat;
+    background-position: center center;
+    background-size: cover;
+    -webkit-box-shadow: 7px 7px 0 0 $darkPink;
+    -moz-box-shadow: 7px 7px 0 0 $darkPink;
+    box-shadow: 7px 7px 0 0 $darkPink;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.search-wrapper {
+    margin: 0 10rem;
+}
+
 @media (max-width: 420px) {
     body {
         font-size: 0.75rem;
@@ -152,5 +176,9 @@ a:not(.btn), a:hover:not(.btn), a:active:not(.btn) {
 
     .form-group label {
         font-size: 0.75rem;
+    }
+
+    .search-wrapper {
+        margin: 0;
     }
 }
