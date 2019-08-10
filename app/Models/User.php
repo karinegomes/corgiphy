@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property string username
+ * @property string email
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -22,5 +25,13 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function getForApi()
+    {
+        return [
+            'username' => $this->username,
+            'email'    => $this->email,
+        ];
     }
 }

@@ -17,4 +17,7 @@ Route::get('search', 'SearchController@search');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('favorites', 'FavoriteController@store');
+
+    Route::get('user', 'UserController@getUser');
+    Route::post('update-user', 'UserController@updateUser');
 });

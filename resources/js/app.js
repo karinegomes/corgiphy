@@ -29,6 +29,7 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('lightbox', require('./components/partials/Lightbox.vue').default);
 Vue.component('register', require('./components/Register.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
+Vue.component('profile-tab', require('./components/partials/ProfileTab.vue').default);
 Vue.component('profile', require('./components/Profile.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
