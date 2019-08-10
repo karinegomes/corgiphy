@@ -14,7 +14,7 @@
                 </div>
                 <div class="vue-lb-figure">
                     <img :src="gif.url" :srcset="imageUrl" class="vue-lb-modal-image">
-                    <div :class="['vue-lb-footer', favoriteClass()]" @click="addToFavorites(gif)">
+                    <div :class="['vue-lb-footer', favoriteClass()]" @click="addToFavorites(gif)" v-if="apiToken">
                         <i class="fas fa-heart" v-if="gif.is_favorite"></i>
                         <i class="far fa-heart" v-else></i>
                     </div>
@@ -46,7 +46,8 @@
         show: false,
         imageUrl: '',
         gif: null,
-        index: 0
+        index: 0,
+        apiToken: apiToken
       };
     },
     methods: {

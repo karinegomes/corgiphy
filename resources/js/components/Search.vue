@@ -2,6 +2,7 @@
     <div class="search-wrapper">
         <div class="container-fluid mt-100">
             <template v-if="!isLoading">
+                <h1 class="mb-5">{{ query }}</h1>
                 <div class="row" v-for="(row, index1) in results">
                     <div class="col-sm" v-for="(gif, index2) in row">
                         <div :style="'background-image: url(' + gif.still_url + ')'"
@@ -55,7 +56,6 @@
 
         axios.get('/api/search', {
           params: {
-            api_token: apiToken,
             query: this.query,
             offset: this.offset
           }

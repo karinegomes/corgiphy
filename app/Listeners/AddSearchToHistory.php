@@ -11,9 +11,11 @@ class AddSearchToHistory
     {
         $user = auth()->user();
 
-        $user->histories()->create([
-            'query'       => $event->query,
-            'searched_at' => now(),
-        ]);
+        if ($user) {
+            $user->histories()->create([
+                'query'       => $event->query,
+                'searched_at' => now(),
+            ]);
+        }
     }
 }
