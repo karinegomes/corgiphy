@@ -3,19 +3,19 @@
         <div class="container-fluid">
             <template v-if="!isLoading">
                 <div class="row" v-for="row in results">
-                    <div class="col-sm" v-for="gif in row">
+                    <div class="col-sm-3" v-for="gif in row">
                         <div :style="'background-image: url(' + gif.still_url + ')'"
                              class="gallery-img"
                              @click="openLightbox(gif, getIndex(gif))"></div>
                     </div>
                 </div>
 
-                <!--<div class="text-center">
+                <div class="text-center" v-if="hasNextPage()">
                     <button class="btn btn-primary" @click="loadMore" :disabled="isLoadingMore">
                         <template v-if="!isLoadingMore">GIB MORE !!!</template>
                         <img src="/img/loading.svg" style="width: 20px" v-else>
                     </button>
-                </div>--> <!-- TODO -->
+                </div>
             </template>
             <div class="text-center" v-else>
                 <img src="/img/loading.svg" style="width: 75px">
@@ -37,7 +37,9 @@
         results: [],
         originalResponse: [],
         isLoading: true,
-        isLoadingMore: false
+        isLoadingMore: false,
+        page: 1,
+        lastPage: 1
       };
     },
     components: {Lightbox},
@@ -50,19 +52,20 @@
       getFavorites: function () {
         axios.get('/api/favorites', {
           params: {
-            api_token: apiToken
+            api_token: apiToken,
+            page: this.page
           }
         }).then(response => {
-          let data = response.data.favorites;
+          let result = response.data.favorites;
+          let data = result.data;
 
           this.originalResponse = this.originalResponse.concat(data);
           this.results = JSON.parse(JSON.stringify(this.originalResponse));
           this.results = this.chunkArray(this.results, 4);
           this.isLoading = false;
-
-          /*this.offset += 20;
-          this.isLoading = false;
-          this.isLoadingMore = false;*/
+          this.isLoadingMore = false;
+          this.lastPage = result.last_page;
+          this.page = result.current_page;
         });
       },
       loadNext: function (index) {
@@ -80,7 +83,13 @@
         this.openLightbox(this.originalResponse[index], index);
       },
       loadMore: function () {
+        this.page++;
+        this.isLoadingMore = true;
 
+        this.getFavorites();
+      },
+      hasNextPage: function () {
+        return this.page < this.lastPage;
       }
     }
   }

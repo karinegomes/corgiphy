@@ -4,7 +4,7 @@
             <template v-if="!isLoading">
                 <h1 class="mb-5">{{ query }}</h1>
                 <div class="row" v-for="row in results">
-                    <div class="col-sm" v-for="gif in row">
+                    <div class="col-sm-3" v-for="gif in row">
                         <div :style="'background-image: url(' + gif.still_url + ')'"
                              class="gallery-img"
                              @click="openLightbox(gif, getIndex(gif))"></div>

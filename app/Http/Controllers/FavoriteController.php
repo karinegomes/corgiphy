@@ -22,9 +22,9 @@ class FavoriteController extends Controller
         return response()->json(true);
     }
 
-    public function getFavorites()
+    public function getFavorites(Request $request)
     {
-        $favorites = auth()->user()->favorites;
+        $favorites = auth()->user()->favorites()->paginate(8, ['*'], 'page', $request->input('page'));
 
         return response()->json(compact('favorites'));
     }
