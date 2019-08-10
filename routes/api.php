@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('search', 'SearchController@search');
+
 Route::middleware('auth:api')->group(function () {
     Route::post('favorites', 'FavoriteController@store');
 });
-
-Route::get('search', 'SearchController@search');

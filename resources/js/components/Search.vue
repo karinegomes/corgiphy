@@ -60,11 +60,17 @@
           this.isLoadingMore = true;
         }
 
+        let params = {
+          query: this.query,
+          offset: this.offset
+        };
+
+        if (apiToken) {
+          params.api_token = apiToken;
+        }
+
         axios.get('/api/search', {
-          params: {
-            query: this.query,
-            offset: this.offset
-          }
+          params: params
         }).then(response => {
           let data = response.data.data;
 

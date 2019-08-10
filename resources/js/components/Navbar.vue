@@ -6,10 +6,14 @@
                     <a class="navbar-brand" href="/"><img src="/img/logo.png" class="logo" alt="Corgiphy"></a>
                 </div>
                 <div class="p-2 flex-grow-1 bd-highlight" v-if="!isHomepage()">
-                    <form action="">
+                    <form @submit.prevent="search">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Search"
+                                   aria-label="Search"
+                                   v-model="query">
+                            <div class="input-group-append" @click="search">
                                 <span class="input-group-text search-btn">
                                     <i class="fas fa-search"></i>
                                 </span>
@@ -38,7 +42,8 @@
     data: function () {
       return {
         apiToken: apiToken,
-        username: username
+        username: username,
+        query: ''
       };
     },
     computed: {
@@ -66,6 +71,16 @@
         }).then(response => {
           location.href = '/';
         });
+      },
+      search: function () {
+        if (this.query) {
+          location.href = '/search?query=' + this.query;
+        }
+      }
+    },
+    mounted: function () {
+      if (this.$route.query.query !== undefined) {
+        this.query = this.$route.query.query;
       }
     }
   }
