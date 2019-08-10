@@ -8,14 +8,26 @@
                 <form class="text-left" @submit.prevent="login" id="form">
                     <div class="form-group">
                         <label for="login">Enter username or email address</label>
-                        <input type="text" name="login" :class="['form-control', hasError('login') ? 'is-invalid' : '']" id="login">
+                        <input type="text"
+                               name="login"
+                               :class="['form-control', invalidClass(['login', 'email', 'username'])]"
+                               id="login">
                         <div class="invalid-feedback" v-if="hasError('login')">
                             {{ requestErrors.login[0] }}
+                        </div>
+                        <div class="invalid-feedback" v-if="hasError('email')">
+                            {{ requestErrors.email[0] }}
+                        </div>
+                        <div class="invalid-feedback" v-if="hasError('username')">
+                            {{ requestErrors.username[0] }}
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Enter password</label>
-                        <input type="password" name="password" :class="['form-control', hasError('password') ? 'is-invalid' : '']" id="password">
+                        <input type="password"
+                               name="password"
+                               :class="['form-control', invalidClass('password')]"
+                               id="password">
                         <div class="invalid-feedback" v-if="hasError('password')">
                             {{ requestErrors.password[0] }}
                         </div>
@@ -43,6 +55,8 @@
     },
     methods: {
       login: function () {
+        this.resetErrors();
+
         this.isLoading = true;
 
         let formData = new FormData(document.getElementById('form'));
@@ -50,13 +64,9 @@
         axios.post('/login', formData).then(response => {
           location.href = '/';
         }).catch(error => {
-          console.log(error.response);
-
           if (error.response.status === 422) {
             this.requestErrors = error.response.data.errors;
           }
-
-          console.log(this.requestErrors);
 
           this.isLoading = false;
         });
@@ -65,6 +75,22 @@
         let data = this.requestErrors[fieldName];
 
         return (data !== undefined && data.length > 0);
+      },
+      invalidClass: function (fields) {
+        if (fields instanceof String) {
+          return this.hasError(fields) ? 'is-invalid' : '';
+        } else {
+          for (let i = 0; i < fields.length; i++) {
+            if (this.hasError(fields[i])) {
+              return 'is-invalid';
+            }
+          }
+
+          return '';
+        }
+      },
+      resetErrors: function () {
+        this.requestErrors = {};
       }
     }
   }
