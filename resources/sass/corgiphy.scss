@@ -144,6 +144,10 @@ a:not(.btn), a:hover:not(.btn), a:active:not(.btn) {
     margin: 0 10rem;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 @media (max-width: 420px) {
     body {
         font-size: 0.75rem;

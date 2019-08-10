@@ -30,6 +30,8 @@ Vue.component('lightbox', require('./components/partials/Lightbox.vue').default)
 Vue.component('register', require('./components/Register.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
 Vue.component('profile-tab', require('./components/partials/ProfileTab.vue').default);
+Vue.component('favorites-tab', require('./components/partials/FavoritesTab.vue').default);
+Vue.component('history-tab', require('./components/partials/HistoryTab.vue').default);
 Vue.component('profile', require('./components/Profile.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
 Vue.component('home', require('./components/Home.vue').default);

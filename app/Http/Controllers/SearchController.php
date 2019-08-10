@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\SearchEvent;
 use App\Models\Favorite;
+use App\Models\User;
 use App\Services\Giphy\Facades\Giphy;
 use Illuminate\Http\Request;
 
@@ -19,8 +20,9 @@ class SearchController extends Controller
         foreach ($response->data as $item) {
             $isFavorite = false;
 
-            if (auth()->user()) {
-                $isFavorite = Favorite::where('giphy_id', $item->id)->where('user_id', auth()->user()->id)->exists();
+            if ($request->has('api_token')) {
+                $user = User::where('api_token', $request->input('api_token'))->first();
+                $isFavorite = Favorite::where('giphy_id', $item->id)->where('user_id', $user->id)->exists();
             }
 
             $data[] = [

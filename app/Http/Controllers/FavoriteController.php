@@ -21,4 +21,11 @@ class FavoriteController extends Controller
 
         return response()->json(true);
     }
+
+    public function getFavorites()
+    {
+        $favorites = auth()->user()->favorites;
+
+        return response()->json(compact('favorites'));
+    }
 }

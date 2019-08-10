@@ -9,5 +9,5 @@ class Favorite extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['giphy_id'];
+    protected $fillable = ['giphy_id', 'url', 'still_url'];
 }

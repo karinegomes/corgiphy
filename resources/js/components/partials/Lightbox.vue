@@ -14,7 +14,7 @@
                 </div>
                 <div class="vue-lb-figure">
                     <img :src="gif.url" :srcset="imageUrl" class="vue-lb-modal-image">
-                    <div :class="['vue-lb-footer', favoriteClass()]" @click="addToFavorites(gif)" v-if="apiToken">
+                    <div :class="['vue-lb-footer', favoriteClass()]" @click="addToFavorites(gif)" v-if="showFooter">
                         <i class="fas fa-heart" v-if="gif.is_favorite"></i>
                         <i class="far fa-heart" v-else></i>
                     </div>
@@ -47,8 +47,12 @@
         imageUrl: '',
         gif: null,
         index: 0,
-        apiToken: apiToken
+        apiToken: apiToken,
+        showFooter: true
       };
+    },
+    mounted: function () {
+      this.showFooter = this.apiToken !== '';
     },
     methods: {
       onClose: function () {
@@ -71,9 +75,9 @@
 
         axios.post('/api/favorites', {
           giphy_id: gif.id,
+          url: gif.url,
+          still_url: gif.still_url,
           api_token: apiToken
-        }).then(response => {
-          //
         });
       },
       loadNext: function () {
@@ -85,6 +89,9 @@
         let index = this.index - 1;
 
         this.$emit('loadPrevious', index);
+      },
+      setShowFooter: function (value) {
+        this.showFooter = value;
       }
     }
   }

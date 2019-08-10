@@ -1,8 +1,7 @@
 <template>
     <div class="search-wrapper">
-        <div class="container-fluid mt-100">
+        <div class="container-fluid">
             <template v-if="!isLoading">
-                <h1 class="mb-5">{{ query }}</h1>
                 <div class="row" v-for="row in results">
                     <div class="col-sm" v-for="gif in row">
                         <div :style="'background-image: url(' + gif.still_url + ')'"
@@ -11,15 +10,15 @@
                     </div>
                 </div>
 
-                <div class="text-center">
+                <!--<div class="text-center">
                     <button class="btn btn-primary" @click="loadMore" :disabled="isLoadingMore">
                         <template v-if="!isLoadingMore">GIB MORE !!!</template>
                         <img src="/img/loading.svg" style="width: 20px" v-else>
                     </button>
-                </div>
+                </div>--> <!-- TODO -->
             </template>
             <div class="text-center" v-else>
-                <img src="/img/loading.svg" style="width: 150px">
+                <img src="/img/loading.svg" style="width: 75px">
             </div>
         </div>
 
@@ -28,67 +27,43 @@
 </template>
 
 <script>
-  import Lightbox from './partials/Lightbox';
-  import MiscHelper from "./mixins/MiscHelper";
+  import Lightbox from './Lightbox';
+  import MiscHelper from "../mixins/MiscHelper";
 
   export default {
-    name: "Search",
+    name: "FavoritesTab",
     data: function () {
       return {
-        query: '',
-        isLoading: true,
-        isLoadingMore: false,
-        offset: 0,
         results: [],
-        originalResponse: []
+        originalResponse: [],
+        isLoading: true,
+        isLoadingMore: false
       };
     },
     components: {Lightbox},
-    mixins: [MiscHelper],
+    mixins: [ MiscHelper ],
     mounted: function () {
-      if (this.$route.query.query !== undefined && this.$route.query.query !== '') {
-        this.query = this.$route.query.query;
-      } else {
-        location.href = '/';
-      }
-
-      this.search();
+      this.$refs.lightbox.setShowFooter(false);
+      this.getFavorites();
     },
     methods: {
-      search: function () {
-        if (this.originalResponse.length === 0) {
-          this.isLoading = true;
-        } else {
-          this.isLoadingMore = true;
-        }
-
-        let params = {
-          query: this.query,
-          offset: this.offset
-        };
-
-        if (apiToken) {
-          params.api_token = apiToken;
-        }
-
-        axios.get('/api/search', {
-          params: params
+      getFavorites: function () {
+        axios.get('/api/favorites', {
+          params: {
+            api_token: apiToken
+          }
         }).then(response => {
-          let data = response.data.data;
+          let data = response.data.favorites;
 
           this.originalResponse = this.originalResponse.concat(data);
           this.results = JSON.parse(JSON.stringify(this.originalResponse));
           this.results = this.chunkArray(this.results, 4);
-          this.offset += 20;
           this.isLoading = false;
-          this.isLoadingMore = false;
-        }).catch(error => {
+
+          /*this.offset += 20;
           this.isLoading = false;
-          this.isLoadingMore = false;
+          this.isLoadingMore = false;*/
         });
-      },
-      loadMore: function () {
-        this.search();
       },
       loadNext: function (index) {
         if (index >= this.originalResponse.length) {
@@ -103,6 +78,9 @@
         }
 
         this.openLightbox(this.originalResponse[index], index);
+      },
+      loadMore: function () {
+
       }
     }
   }
