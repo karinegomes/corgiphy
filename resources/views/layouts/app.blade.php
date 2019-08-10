@@ -31,6 +31,7 @@
 
 <script>
   const apiToken = '{{ auth()->user() ? auth()->user()->api_token : '' }}';
+  const username = '{{ auth()->user() ? auth()->user()->username : '' }}';
 </script>
 
 <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>

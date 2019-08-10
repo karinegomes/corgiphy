@@ -9,8 +9,10 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueLazyLoad from 'vue-lazyload';
+import VueRouter from 'vue-router';
 
 Vue.use(VueLazyLoad);
+Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,6 +37,12 @@ Vue.component('home', require('./components/Home.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+const router = new VueRouter({
+    mode: 'history',
+    routes: [],
+});
+
 const app = new Vue({
+    router,
     el: '#app',
 });
