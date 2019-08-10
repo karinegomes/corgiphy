@@ -12,7 +12,10 @@
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-primary">GIB MORE !!!</button>
+                    <button class="btn btn-primary" @click="loadMore" :disabled="isLoadingMore">
+                        <template v-if="!isLoadingMore">GIB MORE !!!</template>
+                        <img src="/img/loading.svg" style="width: 20px" v-else>
+                    </button>
                 </div>
             </template>
             <div class="text-center" v-else>
@@ -33,11 +36,10 @@
       return {
         query: '',
         isLoading: true,
+        isLoadingMore: false,
         offset: 0,
         results: [],
-        images: [],
-        lightboxLimit: 3,
-        originalResponse: null
+        originalResponse: []
       };
     },
     components: {Lightbox},
@@ -52,7 +54,11 @@
     },
     methods: {
       search: function () {
-        this.isLoading = true;
+        if (this.originalResponse.length === 0) {
+          this.isLoading = true;
+        } else {
+          this.isLoadingMore = true;
+        }
 
         axios.get('/api/search', {
           params: {
@@ -62,25 +68,15 @@
         }).then(response => {
           let data = response.data.data;
 
-          this.originalResponse = data;
-
-          this.results = JSON.parse(JSON.stringify(data));
+          this.originalResponse = this.originalResponse.concat(data);
+          this.results = JSON.parse(JSON.stringify(this.originalResponse));
           this.results = this.chunkArray(this.results, 4);
-
-          for (let i = 0; i < data.length; i++) {
-            if (i < this.lightboxLimit) {
-              this.images.push({
-                thumb: data[i].url,
-                src: data[i].url,
-                srcset: data[i].url
-              });
-            }
-          }
-
           this.offset += 20;
           this.isLoading = false;
+          this.isLoadingMore = false;
         }).catch(error => {
           this.isLoading = false;
+          this.isLoadingMore = false;
         });
       },
       chunkArray: function (array, chunkSize) {
@@ -96,19 +92,7 @@
         this.$refs.lightbox.showImage(gif, index);
       },
       loadMore: function () {
-        let length = this.originalResponse.length;
-
-        if (this.lightboxLimit + 3 < length) {
-          length = this.lightboxLimit + 3;
-        }
-
-        for (let i = this.lightboxLimit; i < length; i++) {
-          this.images.push({
-            thumb: this.originalResponse[i].url,
-            src: this.originalResponse[i].url,
-            srcset: this.originalResponse[i].url
-          });
-        }
+        this.search();
       },
       loadNext: function (index) {
         if (index >= this.originalResponse.length) {
