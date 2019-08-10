@@ -1,7 +1,6 @@
 <template>
     <div>
         <account-options active-tab="history"></account-options>
-
         <div class="container">
             <div class="row">
                 <div class="col-sm-7 m-auto">
@@ -55,6 +54,8 @@
           }
         }).then(response => {
           let result = response.data.history;
+
+          console.log(result);
 
           this.history = this.history.concat(result.data);
           this.isLoading = false;

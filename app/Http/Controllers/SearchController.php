@@ -33,7 +33,13 @@ class SearchController extends Controller
             ];
         }
 
-        event(new SearchEvent($query));
+        $apiToken = '';
+
+        if ($request->has('api_token')) {
+            $apiToken = $request->input('api_token');
+        }
+
+        event(new SearchEvent($query, $apiToken));
 
         return response()->json(compact('data'));
     }
