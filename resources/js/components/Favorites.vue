@@ -1,37 +1,42 @@
 <template>
-    <div class="search-wrapper">
-        <div class="container-fluid">
-            <template v-if="!isLoading">
-                <div class="row" v-for="row in results">
-                    <div class="col-sm-3" v-for="gif in row">
-                        <div :style="'background-image: url(' + gif.still_url + ')'"
-                             class="gallery-img"
-                             @click="openLightbox(gif, getIndex(gif))"></div>
+    <div>
+        <account-options active-tab="favorites"></account-options>
+
+        <div class="search-wrapper">
+            <div class="container-fluid">
+                <template v-if="!isLoading">
+                    <div class="row" v-for="row in results">
+                        <div class="col-sm-3" v-for="gif in row">
+                            <div :style="'background-image: url(' + gif.still_url + ')'"
+                                 class="gallery-img"
+                                 @click="openLightbox(gif, getIndex(gif))"></div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="text-center" v-if="hasNextPage()">
-                    <button class="btn btn-primary" @click="loadMore" :disabled="isLoadingMore">
-                        <template v-if="!isLoadingMore">GIB MORE !!!</template>
-                        <img src="/img/loading.svg" style="width: 20px" v-else>
-                    </button>
+                    <div class="text-center" v-if="hasNextPage()">
+                        <button class="btn btn-primary" @click="loadMore" :disabled="isLoadingMore">
+                            <template v-if="!isLoadingMore">GIB MORE !!!</template>
+                            <img src="/img/loading.svg" style="width: 20px" v-else>
+                        </button>
+                    </div>
+                </template>
+                <div class="text-center" v-else>
+                    <img src="/img/loading.svg" style="width: 75px">
                 </div>
-            </template>
-            <div class="text-center" v-else>
-                <img src="/img/loading.svg" style="width: 75px">
             </div>
-        </div>
 
-        <lightbox ref="lightbox" v-on:loadNext="loadNext" v-on:loadPrevious="loadPrevious"></lightbox>
+            <lightbox ref="lightbox" v-on:loadNext="loadNext" v-on:loadPrevious="loadPrevious"></lightbox>
+        </div>
     </div>
 </template>
 
 <script>
-  import Lightbox from './Lightbox';
-  import MiscHelper from "../mixins/MiscHelper";
+  import Lightbox from './partials/Lightbox';
+  import MiscHelper from "./mixins/MiscHelper";
+  import AccountOptions from "./partials/AccountOptions";
 
   export default {
-    name: "FavoritesTab",
+    name: "Favorites",
     data: function () {
       return {
         results: [],
@@ -42,7 +47,7 @@
         lastPage: 1
       };
     },
-    components: {Lightbox},
+    components: {AccountOptions, Lightbox},
     mixins: [ MiscHelper ],
     mounted: function () {
       this.$refs.lightbox.setShowFooter(false);

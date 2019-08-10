@@ -13,4 +13,9 @@ class HistoryController extends Controller
 
         return response()->json(compact('history'));
     }
+
+    public function history()
+    {
+        return view('history');
+    }
 }

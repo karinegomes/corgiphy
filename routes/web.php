@@ -16,6 +16,8 @@ Route::get('search', 'SearchController@doSearch');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile', 'UserController@profile');
+    Route::get('favorites', 'FavoriteController@favorites');
+    Route::get('history', 'HistoryController@history');
 });
 
 Auth::routes();

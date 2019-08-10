@@ -28,4 +28,9 @@ class FavoriteController extends Controller
 
         return response()->json(compact('favorites'));
     }
+
+    public function favorites()
+    {
+        return view('favorites');
+    }
 }
