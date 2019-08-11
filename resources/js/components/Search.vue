@@ -7,7 +7,9 @@
                     <div class="col-sm-3" v-for="gif in row">
                         <div :style="'background-image: url(' + gif.still_url + ')'"
                              class="gallery-img"
-                             @click="openLightbox(gif, getIndex(gif))"></div>
+                             @click="openLightbox(gif, getIndex(gif))"
+                             @mouseover="handleOver($event, gif)"
+                             @mouseleave="handleOver($event, gif)"></div>
                     </div>
                 </div>
 
@@ -35,6 +37,7 @@
     name: "Search",
     data: function () {
       return {
+        hover: false,
         query: '',
         isLoading: true,
         isLoadingMore: false,
@@ -103,6 +106,11 @@
         }
 
         this.openLightbox(this.originalResponse[index], index);
+      },
+      handleOver($e, gif) {
+        this.hover = !this.hover
+        
+        $e.target.style = `background-image: url("${this.hover ? gif.url : gif.still_url}")`
       }
     }
   }

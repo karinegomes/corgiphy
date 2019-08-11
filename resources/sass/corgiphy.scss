@@ -129,10 +129,10 @@ a:not(.btn), a:hover:not(.btn), a:active:not(.btn) {
 }
 
 .gallery-img {
-    height: 20rem;
+    min-height: 200px;
     background-repeat:no-repeat;
     background-position: center center;
-    background-size: cover;
+    background-size: contain;
     -webkit-box-shadow: 7px 7px 0 0 $darkPink;
     -moz-box-shadow: 7px 7px 0 0 $darkPink;
     box-shadow: 7px 7px 0 0 $darkPink;
